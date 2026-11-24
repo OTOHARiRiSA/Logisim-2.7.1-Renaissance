@@ -3,12 +3,12 @@
 
 #IntelliJ IDEA
 /.idea/
-/.wix/
 /*.iml
 
 #output
 /out/
 /dist/
+/.wix/
 
 #python
 /scripts/__pycache__/
