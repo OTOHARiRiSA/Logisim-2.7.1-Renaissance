@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+#IntelliJ IDEA
+/.idea/
+/.wix/
+/*.iml
+
+#output
+/out/
+/dist/
+
+#python
+/scripts/__pycache__/
