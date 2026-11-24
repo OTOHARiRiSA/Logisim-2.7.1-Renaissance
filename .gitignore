@@ -12,3 +12,6 @@
 
 #python
 /scripts/__pycache__/
+
+#temporary files
+*tmp*
