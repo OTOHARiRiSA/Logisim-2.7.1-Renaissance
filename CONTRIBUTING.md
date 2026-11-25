@@ -23,15 +23,13 @@ Logisim Renaissance 是一個獨立的社群項目，致力於維護、開發與
 
 ### 1.1 Prerequisites / 前置要求
 
-All maintainers and contributors MUST watch the following video:
-
-https://www.bilibili.com/video/BV1pwC6BxEeb
-
-This video is a joke. Understanding why it is a joke is not optional.
+All maintainers and contributors **MUST** watch the following video:
 
 所有 Maintainer 和 Contributors **必須**觀看以下影片：
 
 https://www.bilibili.com/video/BV1pwC6BxEeb
+
+This video is a joke. Understanding why it is a joke is not optional.
 
 這個影片是個玩笑，但理解它為什麼是個玩笑不是可選項。
 
@@ -79,7 +77,72 @@ Carl Burch 最後正式發布的版本是 **2.7.1**。本項目的 **2.7.2** 基
 
 Logisim Renaissance 由社群獨立維護，並非 Carl Burch 的官方發行版本。
 
-### Our Goals / 項目目標
+### 2.1 Development Environment / 開發環境
+
+Logisim Renaissance supports both automated and manually configured development environments.
+
+The use of mise-en-place is recommended but not mandatory.
+
+Logisim Renaissance 同時支持自動配置及手動配置的開發環境。
+
+我們推薦使用 mise-en-place，但並不強制要求。
+
+#### With mise-en-place / 使用 mise-en-place
+
+Install mise-en-place by following its official documentation:
+
+從官方網站下載 mise-en-place：
+
+https://mise.jdx.dev/
+
+After cloning the repository, run the following commands from the repository root:
+
+完成倉庫 Clone 後，在倉庫根目錄執行以下命令：
+
+```sh
+mise trust
+mise install
+```
+
+The required toolchain versions are declared in `mise.toml`.
+
+所需的工具鏈版本已在 `mise.toml` 中聲明。
+
+#### Without mise-en-place / 不使用 mise-en-place
+
+Contributors may configure their development environments manually by installing the tools declared in `mise.toml`.
+
+貢獻者也可以自行安裝 `mise.toml` 中聲明的工具，以手動配置開發環境。
+
+The primary development tools include:
+
+主要開發工具包括：
+
+- Git
+- Java Development Kit (JDK 25, Eclipse Temurin recommended)
+- Python 3.12
+
+Ensure that the required executables are available in your `PATH`, and configure `JAVA_HOME` where necessary.
+
+請確保所需的可執行文件已加入 `PATH`，並在需要時配置 `JAVA_HOME`。
+
+### 2.2 Editors and IDEs / 編輯器與 IDE
+
+Contributors are free to choose their preferred editors and IDEs. No specific editor or IDE is required.
+
+貢獻者可以自由選擇自己喜歡的編輯器或 IDE，本項目不強制要求使用任何特定的開發工具。
+
+### 2.3 Documentation and Translation / 文檔與翻譯
+
+Contributors working exclusively on documentation or translations are not required to configure the complete build toolchain before making contributions.
+
+僅參與文檔或翻譯工作的貢獻者，不需要在開始貢獻前配置完整的構建工具鏈。
+
+Please save all text files using UTF-8 encoding and preserve the existing document structure.
+
+請使用 UTF-8 編碼保存所有文本文件，並保留既有的文檔結構。
+
+### 2.4 Our Goals / 項目目標
 
 - Preserve the original Logisim's functionality and behavior.
 - Keep the software buildable and usable on modern systems.
