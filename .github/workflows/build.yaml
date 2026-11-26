@@ -3,7 +3,7 @@ name: Build Logisim Renaissance
 on:
   push:
     branches:
-      - feature/cd
+      [feature/cd, develop, master]
   workflow_dispatch:
 
 permissions:
@@ -147,10 +147,16 @@ jobs:
         if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
+          name: logisim-${{ matrix.os }}
+          path: dist/*.jar
+          if-no-files-found: error
           retention-days: 7
 
       - name: Upload Packages
         if: runner.os != 'Linux' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch')
         uses: actions/upload-artifact@v7
         with:
-            retention-days: 7
+          name: packages-${{ matrix.os }}
+          path: packages/
+          if-no-files-found: error
+          retention-days: 7
