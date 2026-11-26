@@ -5,12 +5,16 @@
 /.idea/
 /*.iml
 
+#VSCode
+/.vscode/
+
 #output
 /out/
 /dist/
 /.wix/
 
 #python
+/.venv/
 /scripts/__pycache__/
 
 #temporary files

@@ -15,8 +15,6 @@ dst_tarball = build_path(os.getcwd(), FILENAME)
 known_langs = 'ru es'.split()
 keep_temporary = False
 
-if '\\home\\burch\\' in get_svn_dir():
-    tar_cmd = 'C:/cygwin/bin/tar.exe'
     
 if 'unichr' not in dir():
     unichr = chr
@@ -69,7 +67,7 @@ def load_lang(lang):
     for file in os.listdir(build_path(gui_dir, lang)):
         if file.endswith(suffix):
             file_base = file[:-len(suffix)]
-            with open(os.path.join(gui_dir, lang, file), encoding='ISO-8859-1') as src:
+            with open(os.path.join(gui_dir, lang, file), encoding='UTF-8') as src:
                 for line in src:
                     match = prop_patt.match(line)
                     if match:

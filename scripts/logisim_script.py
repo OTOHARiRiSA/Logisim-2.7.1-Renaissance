@@ -3,30 +3,19 @@ import platform
 import re
 import sys
 
-def build_path(first, *subdirs, **kwargs):
-	dir = first
+def build_path(first, *subdirs):
+	path = first
 	for subdir in subdirs:
 		for subsub in subdir.split('/'):
-			dir = os.path.join(dir, subsub)
-	if 'cygwin' in kwargs and not kwargs['cygwin']:
-		return uncygwin(dir)
-	else:
-		return dir
+			path = os.path.join(path, subsub)
+	return path
 
 def get_svn_dir(*subdirs):
 	script_parent = os.path.dirname(sys.path[0])
 	return build_path(script_parent, *subdirs)
 
-def uncygwin(path, verbose=False):
-	sys = platform.system()
-	if sys.startswith('CYGWIN'):
-		if path.startswith('/cygdrive/'):
-			path = path[10].upper() + ':' + path[11:]
-		elif path.startswith('/'):
-			path = 'C:/cygwin' + path
-		return path
-	else:
-		return path 
+# Cygwin support has been removed.
+# Does anyone still use Cygwin today? Sry o_o
 
 def is_same_file(a, b):
 	samefile = getattr(os.path, 'samefile', None)
@@ -37,8 +26,6 @@ def is_same_file(a, b):
 	else:
 		return samefile(a, b)
 
-def system(*args):
-	return os.system(' '.join(args))
 	
 def prompt(prompt, accept=None):
 	while True:
