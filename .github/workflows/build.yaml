@@ -1,0 +1,61 @@
+name: Build Logisim Renaissance
+
+on:
+  push:
+    branches:
+      - feature/cd
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2025
+            shell: pwsh
+          - os: macos-15
+            shell: zsh -e {0}
+          - os: ubuntu-24.04
+            shell: bash
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Build JAR(Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:GITHUB_WORKSPACE/dist"
+          python scripts/create-jar.py -d "$env:GITHUB_WORKSPACE/dist"
+
+      - name: Build JAR(Unix)
+        if: runner.os != 'Windows'
+        shell: ${{ matrix.shell }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          python scripts/create-jar.py -d "$GITHUB_WORKSPACE/dist"
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: logisim-${{ matrix.os }}
+          path: dist/*.jar
+          if-no-files-found: error
