@@ -18,7 +18,7 @@ jobs:
           - windows-2025
           - macos-15
           - ubuntu-24.04
-        
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-      
+
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
@@ -57,9 +57,100 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/dist"
           python scripts/create-jar.py -d "$GITHUB_WORKSPACE/dist"
 
+      - name: Read Application Version
+        shell: python
+        run: |
+          import os
+          import re
+          from pathlib import Path
+
+          jars = list(Path("dist").glob("*.jar"))
+          if len(jars) != 1:
+              raise SystemExit(f"Expected exactly one JAR, found: {jars}")
+
+          jar = jars[0].name
+          match = re.search(r"(?:^|-)([0-9]+\.[0-9]+\.[0-9]+)\.jar$", jar)
+          if not match:
+              raise SystemExit(f"Cannot determine application version from {jar}")
+
+          version = match.group(1)
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
+              f.write(f"APP_JAR={jar}\nAPP_VERSION={version}\n")
+          print(f"Packaging {jar}, version {version}")
+
+      - name: Check WiX
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Get-Command candle.exe
+          Get-Command light.exe
+          jpackage --version
+
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          foreach ($type in @("exe", "msi")) {
+              jpackage --type $type `
+                --name "Logisim Renaissance" `
+                --input dist `
+                --main-jar "$env:APP_JAR" `
+                --app-version "$env:APP_VERSION" `
+                --dest packages `
+                --win-menu `
+                --win-shortcut `
+                --win-dir-chooser `
+                --verbose
+
+              if ($LASTEXITCODE -ne 0) {
+                  exit $LASTEXITCODE
+              }
+          }
+
+      - name: Package Windows ZIP
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          jpackage --type app-image `
+            --name "Logisim Renaissance" `
+            --input dist `
+            --main-jar "$env:APP_JAR" `
+            --app-version "$env:APP_VERSION" `
+            --dest portable `
+            --verbose
+
+          if ($LASTEXITCODE -ne 0) {
+              exit $LASTEXITCODE
+          }
+
+          Compress-Archive `
+            -Path "portable/Logisim Renaissance" `
+            -DestinationPath "packages/Logisim-Renaissance-${env:APP_VERSION}-windows-x64.zip" `
+            -Force
+
+      - name: Package macOS
+        if: runner.os == 'macOS'
+        shell: 'zsh -e {0}'
+        run: |
+          jpackage --type dmg \
+            --name "Logisim Renaissance" \
+            --input dist \
+            --main-jar "$APP_JAR" \
+            --app-version "$APP_VERSION" \
+            --dest packages \
+            --verbose
+
       - name: Upload JAR
         uses: actions/upload-artifact@v7
         with:
           name: logisim-${{ matrix.os }}
           path: dist/*.jar
+          if-no-files-found: error
+
+      - name: Upload Packages
+        if: runner.os != 'Linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: packages-${{ matrix.os }}
+          path: packages/
           if-no-files-found: error
