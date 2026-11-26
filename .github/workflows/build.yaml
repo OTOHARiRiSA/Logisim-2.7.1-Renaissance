@@ -100,6 +100,7 @@ jobs:
                 --win-menu `
                 --win-shortcut `
                 --win-dir-chooser `
+                --icon "$env:GITHUB_WORKSPACE/www/root/logisim.ico" `
                 --verbose
 
               if ($LASTEXITCODE -ne 0) {
@@ -117,6 +118,7 @@ jobs:
             --main-jar "$env:APP_JAR" `
             --app-version "$env:APP_VERSION" `
             --dest portable `
+            --icon "$env:GITHUB_WORKSPACE/www/root/logisim.ico" `
             --verbose
 
           if ($LASTEXITCODE -ne 0) {
@@ -138,6 +140,7 @@ jobs:
             --main-jar "$APP_JAR" \
             --app-version "$APP_VERSION" \
             --dest packages \
+            --icon "$GITHUB_WORKSPACE/scripts/data/Logisim.app/Contents/Resources/LogisimApp.icns" \
             --verbose
 
       - name: Upload JAR
