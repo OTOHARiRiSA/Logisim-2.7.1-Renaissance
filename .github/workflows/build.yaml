@@ -14,14 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: windows-2025
-            shell: pwsh
-          - os: macos-15
-            shell: zsh -e {0}
-          - os: ubuntu-24.04
-            shell: bash
-      
+        os:
+          - windows-2025
+          - macos-15
+          - ubuntu-24.04
+        
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -39,16 +36,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Build JAR(Windows)
+      - name: Build JAR (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force "$env:GITHUB_WORKSPACE/dist"
           python scripts/create-jar.py -d "$env:GITHUB_WORKSPACE/dist"
 
-      - name: Build JAR(Unix)
-        if: runner.os != 'Windows'
-        shell: ${{ matrix.shell }}
+      - name: Build JAR (macOS)
+        if: runner.os == 'macOS'
+        shell: 'zsh -e {0}'
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          python scripts/create-jar.py -d "$GITHUB_WORKSPACE/dist"
+
+      - name: Build JAR (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
         run: |
           mkdir -p "$GITHUB_WORKSPACE/dist"
           python scripts/create-jar.py -d "$GITHUB_WORKSPACE/dist"
