@@ -12,12 +12,6 @@ from logisim_script import *
 src_dir = get_svn_dir('doc')
 dst_dir = os.getcwd()
 
-# see if we're on Carl Burch's platform, and if so reconfigure defaults
-if '\\home\\burch\\' in get_svn_dir():
-	svn_dir = get_svn_dir()
-	home = svn_dir[:svn_dir.find('\\home\\burch\\') + 11]
-	dst_dir = build_path(home, 'logisim/Scripts/www/docs')
-
 head_end = r'''
 <link rel="shortcut icon" href="{rel}/../../../logisim.ico" />
 <link rel="stylesheet" type="text/css" href="{rel}/../docstyle.css" />

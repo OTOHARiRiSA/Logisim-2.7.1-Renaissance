@@ -65,17 +65,17 @@ Please be willing to learn, communicate, and take responsibility for your contri
 
 ## 2. Understanding the Project / 了解項目
 
-Logisim Renaissance is based on the original Logisim source code developed by Carl Burch.
+Logisim Renaissance is an independently maintained continuation of Carl Burch’s original Logisim. The repository preserves the development history imported from the original SourceForge SVN repository.
 
-The last official release by Carl Burch was **2.7.1**. Version **2.7.2** in this project is based on unreleased development code from the original SVN repository.
+Carl Burch’s last official release was **2.7.1**. Renaissance began with a later, unreleased development snapshot from that SVN repository, which it published as **2.7.2**. See [GitHub Releases](https://github.com/OTOHARiRiSA/Logisim-Renaissance/releases) for the project’s release history.
 
-Logisim Renaissance is independently maintained and is not an official release by Carl Burch.
+We aim to keep Logisim usable on modern systems while preserving compatibility with existing `.circ` files and maintaining the original circuit simulation behavior.
 
-Logisim Renaissance 基於 Carl Burch 開發的原版 Logisim 源碼。
+Logisim Renaissance 由社群獨立維護，延續 Carl Burch 開發的原版 Logisim。本倉庫保留了從原始 SourceForge SVN 倉庫匯入的開發歷史。
 
-Carl Burch 最後正式發布的版本是 **2.7.1**。本項目的 **2.7.2** 基於原始 SVN 倉庫中尚未正式發布的開發代碼。
+Carl Burch 最後正式發布的版本是 **2.7.1**。Renaissance 以該 SVN 倉庫中較晚、尚未正式發布的開發版本為起點，並將它發布為 **2.7.2**。本專案的版本發行紀錄請參閱 [GitHub Releases](https://github.com/OTOHARiRiSA/Logisim-Renaissance/releases)。
 
-Logisim Renaissance 由社群獨立維護，並非 Carl Burch 的官方發行版本。
+我們希望讓 Logisim 能在現代系統上繼續使用，同時維持與既有 `.circ` 檔案的相容性，以及原有的電路模擬行為。
 
 ### 2.1 Development Environment / 開發環境
 
@@ -126,6 +126,34 @@ Ensure that the required executables are available in your `PATH`, and configure
 
 請確保所需的可執行文件已加入 `PATH`，並在需要時配置 `JAVA_HOME`。
 
+#### Build the JAR locally / 在本機建置 JAR
+
+From the repository root, run the commands for your shell after setting up JDK 25 and Python 3.12.
+
+配置好 JDK 25 與 Python 3.12 後，請在倉庫根目錄執行對應的命令。
+
+**PowerShell**
+
+```powershell
+New-Item -ItemType Directory -Force dist | Out-Null
+python scripts/create-jar.py -d "$PWD/dist"
+```
+
+**Bash or Zsh**
+
+```sh
+mkdir -p dist
+python scripts/create-jar.py -d "$PWD/dist"
+```
+
+If you installed the tools with mise and have not activated it in your shell, use `mise exec -- python` in place of `python` in the build command.
+
+若你使用 mise 安裝工具，但尚未在目前的 shell 啟用 mise，請在建置命令中將 `python` 換成 `mise exec -- python`。
+
+The script prints the generated JAR filename. To launch Logisim, run `java -jar` followed by the path to that file in `dist`.
+
+腳本會顯示產生的 JAR 檔名。請以 `java -jar` 加上 `dist` 中該檔案的路徑來啟動 Logisim。
+
 ### 2.2 Editors and IDEs / 編輯器與 IDE
 
 Contributors are free to choose their preferred editors and IDEs. No specific editor or IDE is required.
@@ -164,36 +192,17 @@ Please save all text files using UTF-8 encoding and preserve the existing docume
 
 ## 3. Downloading and Testing / 下載與測試
 
-### 3.1 Releases Are Not Source Code / 發行包不是源碼
+### 3.1 Download a release / 下載發行版本
 
-If you only want to use or test Logisim Renaissance, **you do not need to download or compile the source code**.
+To test a published version, choose the version on the [Releases page](https://github.com/OTOHARiRiSA/Logisim-Renaissance/releases) and download a package or standalone JAR from **Assets**. See the [README](README.md#下載與安裝--download-and-install) for installation instructions.
 
-Visit the Releases page:
+若要測試已發布的版本，請到 [Releases 頁面](https://github.com/OTOHARiRiSA/Logisim-Renaissance/releases) 選擇版本，從 **Assets** 下載發行包或獨立 JAR。安裝方式請參閱 [README](README.md#下載與安裝--download-and-install)。
 
-https://github.com/otoharirisa/Logisim-2.7.x-Renaissance/releases
+### 3.2 Choose a test asset / 選擇測試檔案
 
-Select a release and download the appropriate file from its **Assets** section.
+Use an installer to test installation and uninstallation, a Windows ZIP to test portable use, or the standalone JAR to test with your own Java runtime. GitHub’s `Source code (zip)` and `Source code (tar.gz)` entries contain the source tree for that release.
 
-如果你只是想使用或測試 Logisim Renaissance，**不需要下載或編譯源碼**。
-
-請前往 Releases 頁面：
-
-https://github.com/otoharirisa/Logisim-2.7.x-Renaissance/releases
-
-選擇一個發行版本，然後從 **Assets** 區域下載對應文件。
-
-### 3.2 Windows Packages / Windows 發行包
-
-| Package / 文件 | Purpose / 用途 |
-|---|---|
-| ZIP | Portable distribution / 便攜版，解壓後運行 |
-| Setup.exe | Windows installer / Windows 安裝程序 |
-| MSI | Windows Installer package / Windows Installer 安裝包 |
-| Source code | For development / 供開發者使用的源碼 |
-
-**Important:** The automatically generated `Source code (zip)` and `Source code (tar.gz)` archives on GitHub are not prebuilt applications.
-
-**注意：** GitHub 自動生成的 `Source code (zip)` 和 `Source code (tar.gz)` 是源碼壓縮包，不是已構建好的應用程序。
+測試安裝與移除時，請選擇安裝包。測試 Windows 免安裝版時，請選擇 ZIP。若要使用自行安裝的 Java 執行環境，請選擇獨立 JAR。GitHub 的 `Source code (zip)` 和 `Source code (tar.gz)` 是該版本的原始碼封存檔。
 
 ### 3.3 What to Test / 測試內容
 
@@ -257,43 +266,32 @@ Please describe the problem clearly and avoid reporting unrelated problems in a 
 
 ### 5.1 Basic Workflow / 基本流程
 
-1. Fork the repository.
-2. Clone your fork to your local machine.
-3. Create a branch for your changes.
-4. Make and test your changes.
-5. Commit your changes with a meaningful message(Conventional Commits).
-6. Push the branch to your fork.
-7. Open a Pull Request against the upstream repository.
+Fork the repository, create a branch from upstream `develop`, and make and test your changes on that branch. Use a meaningful [Conventional Commits](https://www.conventionalcommits.org/) message. Push to your fork and open a pull request targeting the upstream `develop` branch.
 
-基本流程如下：
+請先 Fork 本倉庫，再從上游的 `develop` 建立分支，在該分支修改並測試。提交時請使用清楚的 [Conventional Commits](https://www.conventionalcommits.org/) 訊息。將分支推送至自己的 Fork，再向上游的 `develop` 提交 Pull Request。
 
-1. Fork 本倉庫。
-2. 將 Fork 後的倉庫 Clone 到本地。
-3. 為修改建立獨立分支。
-4. 完成修改並進行測試。
-5. 使用有意義的 Commit Message （Conventional Commits）提交修改。
-6. 將分支 Push 到自己的倉庫。
-7. 向上游倉庫提交 Pull Request。
+Replace `YOUR_USERNAME` with your GitHub username and `path/to/changed-file` with the file you changed.
 
-Example / 示例：
+請將 `YOUR_USERNAME` 換成你的 GitHub 使用者名稱，並將 `path/to/changed-file` 換成你修改的檔案路徑。
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Logisim-2.7.x-Renaissance.git
-cd Logisim-2.7.x-Renaissance
+git clone https://github.com/YOUR_USERNAME/Logisim-Renaissance.git
+cd Logisim-Renaissance
+git remote add upstream https://github.com/OTOHARiRiSA/Logisim-Renaissance.git
+git fetch upstream
+git switch -c fix/example-issue upstream/develop
 
-git switch -c fix/example-issue
+# Make and test your changes.
+# 完成修改並測試。
 
-# Make your changes
-# 進行修改
-
-git add .
+git add -- path/to/changed-file
 git commit -m "fix: describe the change"
 git push -u origin fix/example-issue
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username.
+For a small documentation edit in the GitHub web editor, start from `develop`, save the change to a new branch, and select `develop` as the pull request’s base branch.
 
-請將 `YOUR_USERNAME` 替換為你的 GitHub 使用者名稱。
+若在 GitHub 網頁編輯器做小幅文件修改，請先切換至 `develop`，將修改存到新分支，再選擇 `develop` 作為 Pull Request 的目標分支。
 
 If you are unfamiliar with Git or Pull Requests, feel free to ask questions before submitting changes.
 

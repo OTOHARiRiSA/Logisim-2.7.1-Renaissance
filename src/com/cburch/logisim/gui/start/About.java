@@ -57,7 +57,7 @@ public class About {
 		private final Color fadeColor = new Color(255, 255, 255, 128);
 		private final Color headerColor = new Color(143, 0, 0);
 		private final Color gateColor = Color.DARK_GRAY;
-		private final Font headerFont = new Font("Monospaced", Font.BOLD, 72);
+		private final Font headerFont = new Font("Monospaced", Font.BOLD, 30);
 		private final Font versionFont = new Font("Serif", Font.PLAIN | Font.ITALIC, 32);
 		private final Font copyrightFont = new Font("Serif", Font.ITALIC, 18);
 		
@@ -210,7 +210,7 @@ public class About {
 			
 			g.setColor(headerColor);
 			g.setFont(headerFont);
-			g.drawString("Logisim", x, y + 45);
+			g.drawString("Logisim Renaissance", x, y + 45);
 			g.setFont(copyrightFont); fm = g.getFontMetrics();
 			str = "\u00a9 " + Main.COPYRIGHT_YEAR;
 			g.drawString(str, x + IMAGE_WIDTH - fm.stringWidth(str), y + 16);
@@ -248,6 +248,6 @@ public class About {
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		JOptionPane.showMessageDialog(owner, panel,
-				"Logisim " + Main.VERSION_NAME, JOptionPane.PLAIN_MESSAGE);
+				"Logisim Renaissance " + Main.VERSION_NAME, JOptionPane.PLAIN_MESSAGE);
 	}
 }

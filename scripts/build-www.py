@@ -11,15 +11,6 @@ from logisim_script import *
 dst_path = os.getcwd()
 src_path = build_path(get_svn_dir(), 'www')
 
-# see if we're on Carl Burch's platform, and if so reconfigure defaults
-if '\\home\\burch\\' in get_svn_dir():
-	svn_dir = get_svn_dir()
-	home = svn_dir[:svn_dir.find('\\home\\burch\\') + 11]
-	dst_path = build_path(home, 'logisim/Scripts/www/base')
-	if not os.path.exists(dst_path):
-		os.mkdir(dst_path)
-	os.chdir(dst_path)
-
 # determine which HTML files are represented
 print('determining HTML files available')
 html_files = { }
@@ -47,12 +38,13 @@ template_langmenu_other = '''<tr>
 </tr>'''
 template_langmenu_cur = '''<tr><th>[{xn}]</th><td>{xnname}</td></tr>'''
 langmenu_names = {
-	'de': 'Deutsch',
-	'el': '\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC',
-	'en': 'English',
-	'es': 'espa\u00f1ol',
-	'pt': 'Portugu\u00eas',
-	'ru': '\u0420\u0443\u0441\u0441\u043a\u0438\u0439',
+    'de': 'Deutsch',
+    'el': 'Ελληνικά',
+    'en': 'English',
+    'es': 'español',
+    'pt': 'Português',
+    'ru': 'Русский',
+    'zh': '简体中文',
 }
 
 def build_langmenu(file, lang):
